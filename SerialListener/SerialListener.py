@@ -1,7 +1,7 @@
 import serial, time, logging, datetime
 
 #Don't forget to update the serial port location!!
-serial_port = serial.Serial('COM6', 9600, timeout=0)
+serial_port = serial.Serial('COM8', 9600, timeout=0.1)
 
 header = ["time", "response"]
 start = time.time()
@@ -22,14 +22,11 @@ def main(serial_port):
 
     try:
         while True:
-            try:
-                response = serial_port.readline()
-                run_time = str(time.time() - start)
-                format_and_store(data_file, [run_time, response])
-                print("Stored:",run_time,response)
-            except serial_port.SerialTimeoutException:
-                print('Data could not be read.')
-                format_and_store(data_file, [run_time, "No data found."])
+            response = str(serial_port.readline())
+            print("response", response)
+            run_time = str(time.time() - start)
+            format_and_store(data_file, [run_time, response])
+            print("Stored:",run_time,response)
     except KeyboardInterrupt:
         data_file.close()
         print("File closed.")
